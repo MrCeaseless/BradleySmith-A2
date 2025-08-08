@@ -21,7 +21,7 @@ public class Employee extends Person {
     }
 
     // Set employee ID — cannot be blank
-    public void setEmployeeId(String employeeId) {
+    public final void setEmployeeId(String employeeId) {
         if (employeeId == null || employeeId.trim().isEmpty()) {
             throw new IllegalArgumentException("Employee ID cannot be null or blank");
         }
@@ -34,7 +34,7 @@ public class Employee extends Person {
     }
 
     // Set role — cannot be blank
-    public void setRole(String role) {
+    public final void setRole(String role) {
         if (role == null || role.trim().isEmpty()) {
             throw new IllegalArgumentException("Role cannot be null or blank");
         }
@@ -47,7 +47,7 @@ public class Employee extends Person {
     }
 
     // Set active status
-    public void setActive(boolean active) {
+    public final void setActive(boolean active) {
         this.active = active;
     }
 }

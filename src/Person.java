@@ -30,7 +30,7 @@ public abstract class Person {
     }
 
     // Set ID — must be greater than 0
-    public void setId(int id) {
+    public final void setId(int id) {
         if (id <= 0) {
             throw new IllegalArgumentException("ID must be greater than 0");
         }
@@ -38,7 +38,7 @@ public abstract class Person {
     }
 
     // Set full name — cannot be blank and must be 80 characters or fewer
-    public void setFullName(String fullName) {
+    public final void setFullName(String fullName) {
         if (fullName == null || fullName.trim().isEmpty()) {
             throw new IllegalArgumentException("Full name cannot be null or blank");
         }
@@ -49,7 +49,7 @@ public abstract class Person {
     }
 
     // Set phone number — must match allowed format and be 8–20 characters long
-    public void setPhoneNumber(String phoneNumber) {
+    public final void setPhoneNumber(String phoneNumber) {
         if (phoneNumber == null || !phoneNumber.matches("^[0-9 +()-]{8,20}$")) {
             throw new IllegalArgumentException("Phone number format is invalid");
         }

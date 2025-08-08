@@ -21,7 +21,7 @@ public class Visitor extends Person {
     }
 
     // Set ticket ID — cannot be blank
-    public void setTicketId(String ticketId) {
+    public final void setTicketId(String ticketId) {
         if (ticketId == null || ticketId.trim().isEmpty()) {
             throw new IllegalArgumentException("Ticket ID cannot be null or blank");
         }
@@ -34,7 +34,7 @@ public class Visitor extends Person {
     }
 
     // Set age — must be 0 or greater
-    public void setAge(int age) {
+    public final void setAge(int age) {
         if (age < 0) {
             throw new IllegalArgumentException("Age must be zero or greater");
         }
@@ -47,7 +47,7 @@ public class Visitor extends Person {
     }
 
     // Set height — must be 0 or greater
-    public void setHeightCm(int heightCm) {
+    public final void setHeightCm(int heightCm) {
         if (heightCm < 0) {
             throw new IllegalArgumentException("Height must be zero or greater");
         }
