@@ -35,6 +35,8 @@ public class AssignmentTwo {
          partFourB();
          System.out.println("=======Part 5========");
          partFive();
+         System.out.println("=======Part 6========");
+         partSix();
     }
 
     public static void partFourA() {
