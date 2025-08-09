@@ -304,7 +304,7 @@ public void importRideHistory(Path file) {
                 rideHistory.add(v);
                 loaded++;
             } catch (NumberFormatException ex) {
-                // malformed row or validation error
+                // skip over malformeds row or validation errors
                 skipped++;
             }
         }
