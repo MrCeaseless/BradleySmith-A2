@@ -65,7 +65,7 @@ public class Ride implements RideInterface {
         this.maxRider = maxRider;
     }
 
-    // Setter is optional; usually only incremented inside runOneCycle()
+   
     public void setNumOfCycles(int numOfCycles) {
         if (numOfCycles < 0) {
             throw new IllegalArgumentException("numOfCycles cannot be negative");
@@ -196,9 +196,6 @@ public void sortHistory(Comparator<Visitor> comparator) {
     System.out.println("[Sort] Ride history sorted.");
 }
 
-
-
-
     // Run a single ride cycle:
     // - Block if operator is null (ride closed) and print a clear message
     // - If queue is empty, print a message and return
@@ -206,6 +203,33 @@ public void sortHistory(Comparator<Visitor> comparator) {
     // - Increment numOfCycles and print the new cycle count
     @Override
     public void runOneCycle() {
-        throw new UnsupportedOperationException("runOneCycle not implemented yet");
+         // 1) Safety checks
+    if (operator == null || !operator.isActive()) {
+        System.out.println("[Cycle] Cannot run: ride has no active operator assigned.");
+        return;
     }
+    if (waitingQueue.isEmpty()) {
+        System.out.println("[Cycle] Cannot run: queue is empty.");
+        return;
+    }
+
+    // 2) Work out how many seats to fill this cycle
+    int seats = Math.min(maxRider, waitingQueue.size());
+    System.out.println("[Cycle] Starting cycle #" + (numOfCycles + 1) +
+            " on " + name + " with up to " + maxRider + " seats.");
+    System.out.println("[Cycle] Filling " + seats + " seat(s).");
+
+    // 3) Dequeue up to maxRider visitors and add each to history
+    for (int i = 0; i < seats; i++) {
+        Visitor v = waitingQueue.poll();               // from front of queue
+        System.out.println("[Cycle] Riding: " + v.getFullName() +
+                " (ticket " + v.getTicketId() + ")");
+        rideHistory.add(v);                            // append to history
+    }
+
+    // 4) Increment cycle counter and report status
+    numOfCycles++;
+    System.out.println("[Cycle] Completed. Total cycles so far: " + numOfCycles);
+    System.out.println("[Queue] Remaining in queue: " + waitingQueue.size());
+}
 }

@@ -33,6 +33,8 @@ public class AssignmentTwo {
         partFourA();
          System.out.println("=======Part 4b========");
          partFourB();
+         System.out.println("=======Part 5========");
+         partFive();
     }
 
     public static void partFourA() {
@@ -79,5 +81,32 @@ public static void partFourB() {
     System.out.println("After sort (name, then ticket):");
     ride.printRideHistory();
 }
+
+public static void partFive() {
+    Employee op = new Employee(10, "Riley Operator", "0412 999 000",
+            "EMP-010", "Ride Operator", true);
+    Ride ride = new Ride("Vortex", op, 4);   // capacity 4 per cycle
+
+    // Add 10 visitors to the queue
+    for (int i = 1; i <= 10; i++) {
+        ride.addVisitorToQueue(new Visitor(500 + i, "Visitor " + i, "0412 000 00" + i,
+                "Q-" + i, 20 + (i % 5), 160 + i));
+    }
+
+    // Show queue before running
+    System.out.println("=======Before cycle=======");
+    ride.printQueue();
+
+    // Run one cycle
+    System.out.println("=======Run one cycle=======");
+    ride.runOneCycle();
+
+    // Show queue and history after
+    System.out.println("=======After cycle=======");
+    ride.printQueue();
+    ride.numberOfVisitors();
+    ride.printRideHistory();
+}
+
 
 }
