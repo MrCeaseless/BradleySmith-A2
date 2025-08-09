@@ -53,4 +53,21 @@ public class Visitor extends Person {
         }
         this.heightCm = heightCm;
     }
+
+    @Override
+public boolean equals(Object o) {
+    if (this == o) return true; // If both references point to the same object in memory, then they are equal 
+    if (!(o instanceof Visitor)) return false; // If the other object is Not a visitor, then they cannot be equal
+    Visitor other = (Visitor) o;
+  
+    return this.ticketId != null && this.ticketId.equals(other.ticketId);   // ticketId uniquely identifies a visitor in this system, 
+                          // Here ^ is also where we decide that two visitors with the same ticketId are equal
+}
+
+@Override
+public int hashCode() { 
+    return ticketId == null ? 0 : ticketId.hashCode(); // Here we check to see if the hashcode/ticketId is consistent with equals. 
+    //ie. If two visitors are equal they MUST return the same hashCode, should the ticketId be null it will return a value of 0 as a default.
+}
+
 }

@@ -27,6 +27,34 @@ public class AssignmentTwo {
     }
 
     public static void main(String[] args) {
+        System.out.println("=======Part 3========");
         partThree();
+        System.out.println("=======Part 4a========");
+        partFourA();
     }
+
+    public static void partFourA() {
+    Employee op = new Employee(2, "Nina Operator", "0412 000 100", "EMP-002", "Ride Operator", true);
+    Ride ride = new Ride("Falcon Loop", op, 4);
+
+    Visitor a = new Visitor(201, "Ada Park", "0412 101 101", "TK-A1", 21, 163);
+    Visitor b = new Visitor(202, "James Ray", "0412 202 202", "TK-B2", 18, 175);
+    Visitor c = new Visitor(203, "Karl Jacobs", "0412 303 303", "TK-C3", 23, 168);
+    Visitor d = new Visitor(204, "Brian Smith",  "0412 404 404", "TK-D4", 20, 171);
+    Visitor e = new Visitor(205, "Ava Wilson",  "0412 505 505", "TK-E5", 19, 166);
+
+    // Simulate that these people already rode
+    ride.addVisitorToHistory(a);
+    ride.addVisitorToHistory(b);
+    ride.addVisitorToHistory(c);
+    ride.addVisitorToHistory(d);
+    ride.addVisitorToHistory(e);
+
+    ride.checkVisitorFromHistory(c);   // should be true
+    ride.checkVisitorFromHistory(new Visitor(999, "George Michel", "0412 000 000", "TK-Z9", 30, 180)); // false
+
+    ride.numberOfVisitors();
+    ride.printRideHistory();
+}
+
 }

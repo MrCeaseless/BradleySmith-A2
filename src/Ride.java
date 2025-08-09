@@ -1,4 +1,5 @@
 import java.util.ArrayDeque;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -86,7 +87,7 @@ public class Ride implements RideInterface {
         // Implement (FIFO)
         boolean added = waitingQueue.offer(v);
         if (added) {
-            System.out.println("[Queue] Added to queue: " + v.getFullName() + "(ticket " +v.getTicketId() + "). Size now: " + waitingQueue.size());
+            System.out.println("[Queue] Added to queue: " + v.getFullName() + " (ticket " +v.getTicketId() + "). Size now: " + waitingQueue.size());
         } else {
             System.out.println("[Queue] Failed to add visitor to the queue.");
         }
@@ -116,7 +117,7 @@ public class Ride implements RideInterface {
         System.out.println("[Queue] The queue is empty.");
         return;
     }
-    System.out.println("[Queue] Current waiting line (front → back):");
+    System.out.println("[Queue] Current waiting line (front -> back):");
     int pos = 1;
     // For readability, a simple for-each is fine here
     for (Visitor v : waitingQueue) {
@@ -128,28 +129,58 @@ public class Ride implements RideInterface {
     // Add a visitor to ride history (append at end). Print success/failure.
     @Override
     public boolean addVisitorToHistory(Visitor v) {
-        throw new UnsupportedOperationException("addVisitorToHistory not implemented yet");
+       if (v == null) {
+        System.out.println("[History] Cannot add: visitor is null.");
+        return false;
+    }
+    boolean added = rideHistory.add(v); // append at end
+    if (added) {
+        System.out.println("[History] Added: " + v.getFullName() + " (ticket " + v.getTicketId() + ")");
+    } else {
+        System.out.println("[History] Failed to add visitor.");
+    }
+    return added;
     }
 
     // Return true if visitor is present in ride history; print the check result.
     @Override
     public boolean checkVisitorFromHistory(Visitor v) {
-        throw new UnsupportedOperationException("checkVisitorFromHistory not implemented yet");
+          if (v == null) {
+        System.out.println("[History] Check failed: visitor is null.");
+        return false;
     }
+    boolean present = rideHistory.contains(v); // uses Visitor.equals()
+    System.out.println("[History] " + v.getFullName() + " (ticket " + v.getTicketId() + ") "
+            + (present ? "is present." : "is NOT present."));
+    return present;
+}
+    
 
     // Return the number of visitors recorded in ride history.
     @Override
     public int numberOfVisitors() {
-        throw new UnsupportedOperationException("numberOfVisitors not implemented yet");
+         int count = rideHistory.size();
+    System.out.println("[History] Total visitors recorded: " + count);
+    return count;
     }
 
     // Print all visitors from history using an Iterator (marker expects Iterator usage).
     @Override
     public void printRideHistory() {
-        // Example of the Iterator you’ll use later:
-        // Iterator<Visitor> it = rideHistory.iterator();
-        // while (it.hasNext()) { Visitor v = it.next(); ... }
-        throw new UnsupportedOperationException("printRideHistory not implemented yet");
+      if (rideHistory.isEmpty()) {
+        System.out.println("[History] No visitors recorded yet.");
+        return;
+    }
+    System.out.println("[History] All riders (first -> last):");
+
+    // Iterator  required by the brief
+    int i = 1;
+    Iterator<Visitor> it = rideHistory.iterator();
+    while (it.hasNext()) {
+        Visitor v = it.next();
+        System.out.println("  " + (i++) + ". " + v.getFullName()
+                + " (ticket " + v.getTicketId() + ")");
+    }
     }
 
     // Run a single ride cycle:
