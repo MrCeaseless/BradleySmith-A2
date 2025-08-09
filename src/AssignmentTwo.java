@@ -108,5 +108,17 @@ public static void partFive() {
     ride.printRideHistory();
 }
 
+public static void partSix() {
+    Employee op = new Employee(20, "Opal Operator", "0412 700 000", "EMP-020", "Ride Operator", true);
+    Ride ride = new Ride("Cyclone", op, 4);
+
+    ride.addVisitorToHistory(new Visitor(801, "Liam Shaw", "0412 111 111", "H-01", 22, 171));
+    ride.addVisitorToHistory(new Visitor(802, "Mia Wong",  "0412 222 222", "H-02", 20, 165));
+    ride.addVisitorToHistory(new Visitor(803, "Noah O'Neil", "0412 333 333", "H-03", 24, 178)); // shows quote handling
+    ride.addVisitorToHistory(new Visitor(804, "Zara, Kay", "0412 444 444", "H-04", 19, 160));   // shows comma handling
+
+    java.nio.file.Path out = java.nio.file.Paths.get("ride_history.csv");
+    ride.exportRideHistory(out);
+}
 
 }

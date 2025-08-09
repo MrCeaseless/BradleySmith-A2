@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.Collections;
 import java.util.Comparator;
@@ -231,5 +235,41 @@ public void sortHistory(Comparator<Visitor> comparator) {
     numOfCycles++;
     System.out.println("[Cycle] Completed. Total cycles so far: " + numOfCycles);
     System.out.println("[Queue] Remaining in queue: " + waitingQueue.size());
+}
+
+public void exportRideHistory(Path file) {
+    if (rideHistory.isEmpty()) {
+        System.out.println("[File] No history to export.");
+        return;
+    }
+    try (BufferedWriter bw = Files.newBufferedWriter(file)) {
+        // header (optional, but helpful)
+        bw.write("ticketId,fullName,phoneNumber,age,heightCm");
+        bw.newLine();
+
+        for (Visitor v : rideHistory) {
+            String line = String.join(",",
+                    v.getTicketId(),
+                    escapeCsv(v.getFullName()),
+                    escapeCsv(v.getPhoneNumber()),
+                    String.valueOf(v.getAge()),
+                    String.valueOf(v.getHeightCm())
+            );
+            bw.write(line);
+            bw.newLine();
+        }
+        System.out.println("[File] Exported " + rideHistory.size() + " record(s) to " + file.toAbsolutePath());
+    } catch (IOException e) {
+        System.out.println("[File] Export failed: " + e.getMessage());
+    }
+}
+
+// minimal CSV escaping (quote if contains comma or quote)
+private String escapeCsv(String s) {
+    if (s == null) return "";
+    if (s.contains(",") || s.contains("\"")) {
+        return "\"" + s.replace("\"", "\"\"") + "\"";
+    }
+    return s;
 }
 }
