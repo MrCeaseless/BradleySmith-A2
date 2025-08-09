@@ -1,4 +1,6 @@
 import java.util.ArrayDeque;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -181,7 +183,21 @@ public class Ride implements RideInterface {
         System.out.println("  " + (i++) + ". " + v.getFullName()
                 + " (ticket " + v.getTicketId() + ")");
     }
+
     }
+
+    // Sort the ride history using any Comparator<Visitor>
+public void sortHistory(Comparator<Visitor> comparator) {
+    if (rideHistory.isEmpty()) {
+        System.out.println("[Sort] Ride history is empty. Nothing to sort.");
+        return;
+    }
+    Collections.sort(rideHistory, comparator); // LinkedList implements List
+    System.out.println("[Sort] Ride history sorted.");
+}
+
+
+
 
     // Run a single ride cycle:
     // - Block if operator is null (ride closed) and print a clear message
