@@ -37,6 +37,8 @@ public class AssignmentTwo {
          partFive();
          System.out.println("=======Part 6========");
          partSix();
+         System.out.println("=======Part 7========");
+         partSeven();
     }
 
     public static void partFourA() {
@@ -121,6 +123,17 @@ public static void partSix() {
 
     java.nio.file.Path out = java.nio.file.Paths.get("ride_history.csv");
     ride.exportRideHistory(out);
+}
+
+public static void partSeven() {
+    Employee op = new Employee(21, "Ivy Operator", "0412 800 000", "EMP-021", "Ride Operator", true);
+    Ride ride = new Ride("Tempest", op, 4);
+
+    java.nio.file.Path in = java.nio.file.Paths.get("ride_history.csv");
+    ride.importRideHistory(in);
+
+    ride.numberOfVisitors();
+    ride.printRideHistory();
 }
 
 }

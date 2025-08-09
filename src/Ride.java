@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -50,7 +51,7 @@ public class Ride implements RideInterface {
     }
 
     // Setters with validation
-    public void setName(String name) {
+    public final void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Ride name cannot be null or blank");
         }
@@ -58,11 +59,11 @@ public class Ride implements RideInterface {
     }
 
     // Operator can be null to indicate the ride is closed/unassigned.
-    public void setOperator(Employee operator) {
+    public final void setOperator(Employee operator) {
         this.operator = operator;
     }
 
-    public void setMaxRider(int maxRider) {
+    public final void setMaxRider(int maxRider) {
         if (maxRider < 1) {
             throw new IllegalArgumentException("maxRider must be at least 1");
         }
@@ -70,7 +71,7 @@ public class Ride implements RideInterface {
     }
 
    
-    public void setNumOfCycles(int numOfCycles) {
+    public final void setNumOfCycles(int numOfCycles) {
         if (numOfCycles < 0) {
             throw new IllegalArgumentException("numOfCycles cannot be negative");
         }
@@ -78,9 +79,6 @@ public class Ride implements RideInterface {
     }
 
     // ===== Interface implementations =====
-    // Leave these unimplemented for now; Parts 3–7 will fill them in.
-    // Each method explains what you’ll implement next.
-
     // Add visitor to the back of the waiting queue.
     // Should validate non-null, avoid duplicates if you want stricter rules, and print result.
     @Override
@@ -269,6 +267,90 @@ private String escapeCsv(String s) {
     if (s == null) return "";
     if (s.contains(",") || s.contains("\"")) {
         return "\"" + s.replace("\"", "\"\"") + "\"";
+    }
+    return s;
+}
+
+public void importRideHistory(Path file) {
+    if (!Files.exists(file)) {
+        System.out.println("[File] Import failed: file not found -> " + file.toAbsolutePath());
+        return;
+    }
+    int loaded = 0, skipped = 0;
+    try (BufferedReader br = Files.newBufferedReader(file)) {
+        String line;
+        boolean isFirst = true;
+        while ((line = br.readLine()) != null) {
+            if (isFirst) { // skip header
+                isFirst = false;
+                // If the first line is not a header, remove this block or detect by prefix
+                if (line.toLowerCase().startsWith("ticketid")) continue;
+            }
+            String[] cols = parseCsvLine(line);
+            if (cols.length != 5) { // ticketId, fullName, phone, age, heightCm
+                skipped++;
+                continue;
+            }
+            try {
+                String ticketId = unquote(cols[0]).trim();
+                String fullName = unquote(cols[1]).trim();
+                String phone    = unquote(cols[2]).trim();
+                int age         = Integer.parseInt(unquote(cols[3]).trim());
+                int heightCm    = Integer.parseInt(unquote(cols[4]).trim());
+
+                // Reconstruct Visitor with a dummy unique numeric id (not used in equals())
+                Visitor v = new Visitor(100000 + rideHistory.size() + loaded + 1,
+                        fullName, phone, ticketId, age, heightCm);
+                rideHistory.add(v);
+                loaded++;
+            } catch (NumberFormatException ex) {
+                // malformed row or validation error
+                skipped++;
+            }
+        }
+        System.out.println("[File] Imported " + loaded + " record(s), skipped " + skipped + ". From: " + file.toAbsolutePath());
+    } catch (IOException e) {
+        System.out.println("[File] Import failed: " + e.getMessage());
+    }
+}
+
+// very small CSV parser for quoted fields with commas
+private String[] parseCsvLine(String line) {
+    java.util.List<String> out = new java.util.ArrayList<>();
+    StringBuilder cur = new StringBuilder();
+    boolean inQuotes = false;
+    for (int i = 0; i < line.length(); i++) {
+        char ch = line.charAt(i);
+        if (inQuotes) {
+            if (ch == '"') {
+                if (i + 1 < line.length() && line.charAt(i + 1) == '"') { // escaped quote
+                    cur.append('"'); i++;
+                } else {
+                    inQuotes = false;
+                }
+            } else {
+                cur.append(ch);
+            }
+        } else {
+            switch (ch) {
+            case '"' -> inQuotes = true;
+            case ',' -> {
+                out.add(cur.toString());
+                cur.setLength(0);
+                }
+            default -> cur.append(ch);
+            }
+        }
+    }
+    out.add(cur.toString());
+    return out.toArray(String[]::new);
+}
+
+private String unquote(String s) {
+    if (s == null) return "";
+    s = s.trim();
+    if (s.startsWith("\"") && s.endsWith("\"") && s.length() >= 2) {
+        return s.substring(1, s.length() - 1).replace("\"\"", "\"");
     }
     return s;
 }
