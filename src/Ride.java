@@ -78,20 +78,52 @@ public class Ride implements RideInterface {
     // Should validate non-null, avoid duplicates if you want stricter rules, and print result.
     @Override
     public boolean addVisitorToQueue(Visitor v) {
-        throw new UnsupportedOperationException("addVisitorToQueue not implemented yet");
-    }
+        if (v == null) {
+            System.out.println("[Queue] Cannot add: because vistor is null.");
+            return false;
+        }
+
+        // Implement (FIFO)
+        boolean added = waitingQueue.offer(v);
+        if (added) {
+            System.out.println("[Queue] Added to queue: " + v.getFullName() + "(ticket " +v.getTicketId() + "). Size now: " + waitingQueue.size());
+        } else {
+            System.out.println("[Queue] Failed to add visitor to the queue.");
+        }
+        return added;
+        }
+    
 
     // Remove visitor from the front of the waiting queue (or report empty).
     @Override
     public Visitor removeVisitorFromQueue() {
-        throw new UnsupportedOperationException("removeVisitorFromQueue not implemented yet");
+         // If queue is empty, report and return null
+    if (waitingQueue.isEmpty()) {
+        System.out.println("[Queue] No visitors to remove: the queue is empty.");
+        return null;
     }
+    // Dequeue from the front (FIFO)
+    Visitor v = waitingQueue.poll();
+    System.out.println("[Queue] Removed from queue: " + v.getFullName()
+            + " (ticket " + v.getTicketId() + "). Remaining: " + waitingQueue.size());
+    return v;
+}
 
     // Print all visitors currently waiting (front to back). Keep output readable.
     @Override
     public void printQueue() {
-        throw new UnsupportedOperationException("printQueue not implemented yet");
+          if (waitingQueue.isEmpty()) {
+        System.out.println("[Queue] The queue is empty.");
+        return;
     }
+    System.out.println("[Queue] Current waiting line (front → back):");
+    int pos = 1;
+    // For readability, a simple for-each is fine here
+    for (Visitor v : waitingQueue) {
+        System.out.println("  " + (pos++) + ". " + v.getFullName()
+                + " (ticket " + v.getTicketId() + ")");
+    }
+}
 
     // Add a visitor to ride history (append at end). Print success/failure.
     @Override
