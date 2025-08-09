@@ -2,7 +2,7 @@ public class AssignmentTwo {
 
     public static void partThree() {
         // Set up a ride and an operator
-        Employee op = new Employee(1, "Sam Operator", "0412 000 000", "EMP-001", "Ride Operator", true);
+        Employee op = new Employee(1, "Sam Operator", "0412 152 245", "EMP-001", "Ride Operator", true);
         Ride ride = new Ride("Thunder Run", op, 4);
 
         // Create some visitors
