@@ -31,6 +31,8 @@ public class AssignmentTwo {
         partThree();
         System.out.println("=======Part 4a========");
         partFourA();
+         System.out.println("=======Part 4b========");
+         partFourB();
     }
 
     public static void partFourA() {
@@ -54,6 +56,27 @@ public class AssignmentTwo {
     ride.checkVisitorFromHistory(new Visitor(999, "George Michel", "0412 000 000", "TK-Z9", 30, 180)); // false
 
     ride.numberOfVisitors();
+    ride.printRideHistory();
+}
+
+public static void partFourB() {
+    Employee op = new Employee(3, "Mika Operator", "0412 000 200", "EMP-003", "Ride Operator", true);
+    Ride ride = new Ride("Comet Dash", op, 4);
+
+    // Intentionally out of order + mixed case to show sorting
+    ride.addVisitorToHistory(new Visitor(301, "Zane Cruz", "0412 111 000", "TK-11", 20, 170));
+    ride.addVisitorToHistory(new Visitor(302, "Alex Moon", "0412 222 000", "TK-02", 19, 168));
+    ride.addVisitorToHistory(new Visitor(303, "Alex Moon", "0412 333 000", "TK-01", 22, 175)); // Using the same name to initate a tie which is then broken late due to the ticketId being different
+    ride.addVisitorToHistory(new Visitor(304, "Bella Sun", "0412 444 000", "TK-33", 25, 165));
+    ride.addVisitorToHistory(new Visitor(305, "Cara Lin",  "0412 555 000", "TK-22", 23, 168));
+
+    System.out.println("Before sort:");
+    ride.printRideHistory();
+
+    VisitorHistoryComparator cmp = new VisitorHistoryComparator();
+    ride.sortHistory(cmp);
+
+    System.out.println("After sort (name, then ticket):");
     ride.printRideHistory();
 }
 
