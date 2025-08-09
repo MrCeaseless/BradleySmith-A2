@@ -1,18 +1,36 @@
-## Getting Started
+# Amusement Park Ride Management System
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+## Overview
+This project is a Java-based simulation of an amusement park ride management system.  
+It implements queue management, ride history tracking, sorting, and CSV import/export functionality, following object-oriented programming principles.
 
-## Folder Structure
+The main class for ride functionality is **Ride.java**, which implements `RideInterface`.
 
-The workspace contains two folders by default, where:
+---
 
-- `src`: the folder to maintain sources
-- `lib`: the folder to maintain dependencies
+## Features
+### **Part 3 – Queue Management**
+- Add visitors to the ride queue (FIFO order).
+- Remove visitors from the front of the queue.
+- Print the current queue with ticket details.
 
-Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+### **Part 4a – Ride History**
+- Add visitors to the ride history once they have ridden.
+- Check if a visitor is in the ride history.
+- Display the total number of visitors.
+- Print the ride history using an `Iterator` (required by brief).
 
-> If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
+### **Part 4b – Sorting**
+- Sort ride history by visitor name and ticket number using a `Comparator`.
+- Demonstrates case-sensitive sorting (e.g., "Alex Moon" vs "alex moon").
 
-## Dependency Management
+### **Part 6 – File Import/Export**
+- **Export** ride history to a CSV file.
+- **Import** ride history from a CSV file.
+- Minimal CSV parsing with handling for quoted fields and commas.
+- Skips invalid or malformed records.
+- Generates a sample file (`ride_history.csv`) in the project directory.
 
-The `JAVA PROJECTS` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-dependency#manage-dependencies).
+---
+
+
